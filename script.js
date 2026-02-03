@@ -9,6 +9,237 @@ let currentFilters = {
   rating: null
 };
 let currentSort = 'default';
+let isSignedIn = false;
+let currentProduct = null;
+
+// Product Database with detailed information
+const productsDatabase = {
+  '1': {
+    id: '1',
+    name: 'Wireless Headphones',
+    category: 'Audio',
+    price: 79.99,
+    rating: 5,
+    ratingCount: 124,
+    description: 'Experience premium sound quality with our advanced wireless headphones. Featuring active noise cancellation, 40-hour battery life, and comfort-fit ear cushions for all-day wear.',
+    features: [
+      'Active Noise Cancellation (ANC) technology',
+      '40-hour battery life on single charge',
+      'Bluetooth 5.0 with multipoint connection',
+      'Premium leather ear cushions',
+      'Foldable design with carrying case',
+      'Built-in microphone for calls'
+    ],
+    specs: {
+      'Brand': 'ModernAudio',
+      'Color': 'Matte Black',
+      'Weight': '250g',
+      'Driver Size': '40mm',
+      'Frequency Range': '20Hz - 20kHz',
+      'Impedance': '32 Ohm'
+    }
+  },
+  '2': {
+    id: '2',
+    name: 'Smart Watch',
+    category: 'Electronics',
+    price: 149.99,
+    rating: 4,
+    ratingCount: 89,
+    description: 'Track your fitness journey with style. This smartwatch features advanced health monitoring, GPS tracking, and seamless smartphone integration for the perfect companion.',
+    features: [
+      'Heart rate and SpO2 monitoring',
+      'Built-in GPS for accurate tracking',
+      'Water resistant up to 50m',
+      '7-day battery life',
+      'Customizable watch faces',
+      'Sleep tracking and analysis'
+    ],
+    specs: {
+      'Brand': 'TechFit',
+      'Display': '1.4" AMOLED',
+      'Resolution': '454 x 454',
+      'Battery': '300mAh',
+      'Compatibility': 'iOS & Android',
+      'Weight': '45g'
+    }
+  },
+  '3': {
+    id: '3',
+    name: 'Laptop Backpack',
+    category: 'Accessories',
+    price: 59.99,
+    rating: 4,
+    ratingCount: 56,
+    description: 'A durable and spacious backpack designed for modern professionals. Features multiple compartments, USB charging port, and water-resistant material.',
+    features: [
+      'Fits laptops up to 17 inches',
+      'USB charging port for convenience',
+      'Water-resistant polyester material',
+      'Anti-theft hidden zipper pocket',
+      'Breathable back panel',
+      'Luggage strap for easy travel'
+    ],
+    specs: {
+      'Brand': 'CarryPro',
+      'Material': 'Water-resistant Polyester',
+      'Capacity': '30L',
+      'Dimensions': '18" x 12" x 7"',
+      'Weight': '850g',
+      'Color': 'Charcoal Gray'
+    }
+  },
+  '4': {
+    id: '4',
+    name: 'Portable Charger',
+    category: 'Electronics',
+    price: 39.99,
+    rating: 5,
+    ratingCount: 203,
+    description: 'Never run out of battery again with our high-capacity portable charger. Fast charging technology and multiple ports keep all your devices powered.',
+    features: [
+      '20,000mAh high capacity',
+      'Fast charging (PD 3.0 & QC 3.0)',
+      'Three output ports',
+      'LED power display',
+      'Compact and lightweight',
+      'Multiple safety protections'
+    ],
+    specs: {
+      'Brand': 'PowerMax',
+      'Capacity': '20,000mAh',
+      'Input': 'USB-C & Micro USB',
+      'Output': '2x USB-A, 1x USB-C',
+      'Max Output': '18W',
+      'Weight': '380g'
+    }
+  },
+  '5': {
+    id: '5',
+    name: 'Bluetooth Speaker',
+    category: 'Audio',
+    price: 89.99,
+    rating: 5,
+    ratingCount: 167,
+    description: 'Immerse yourself in 360° surround sound with deep bass. Waterproof design makes it perfect for outdoor adventures and pool parties.',
+    features: [
+      '360° surround sound technology',
+      'IPX7 waterproof rating',
+      '20-hour playtime',
+      'True Wireless Stereo (TWS) pairing',
+      'Built-in power bank function',
+      'Voice assistant compatible'
+    ],
+    specs: {
+      'Brand': 'SoundWave',
+      'Power Output': '30W',
+      'Bluetooth': 'v5.0',
+      'Battery': '5200mAh',
+      'Waterproof': 'IPX7',
+      'Weight': '680g'
+    }
+  },
+  '6': {
+    id: '6',
+    name: 'USB-C Cable',
+    category: 'Accessories',
+    price: 19.99,
+    rating: 4,
+    ratingCount: 92,
+    description: 'High-quality braided USB-C cable with fast charging capability. Durable design tested for 10,000+ bend cycles.',
+    features: [
+      '6ft length for convenience',
+      'Fast charging up to 60W',
+      'Data transfer up to 480Mbps',
+      'Braided nylon design',
+      'Aluminum connector housing',
+      'Universal compatibility'
+    ],
+    specs: {
+      'Brand': 'ConnectPlus',
+      'Length': '6 feet (1.8m)',
+      'Max Power': '60W (20V/3A)',
+      'Data Speed': '480Mbps',
+      'Connector': 'USB-C to USB-C',
+      'Color': 'Space Gray'
+    }
+  },
+  '7': {
+    id: '7',
+    name: 'Wireless Mouse',
+    category: 'Office',
+    price: 29.99,
+    rating: 4,
+    ratingCount: 78,
+    description: 'Ergonomic wireless mouse designed for comfort during long work sessions. Silent clicking and precise tracking on any surface.',
+    features: [
+      'Ergonomic design reduces wrist strain',
+      'Silent click technology',
+      '2.4GHz wireless connection',
+      'Adjustable DPI (800-2400)',
+      '18-month battery life',
+      'Compatible with Windows & Mac'
+    ],
+    specs: {
+      'Brand': 'ErgoTech',
+      'DPI': '800 / 1200 / 1600 / 2400',
+      'Buttons': '6 programmable',
+      'Battery': '1x AA (included)',
+      'Weight': '95g',
+      'Color': 'Matte Black'
+    }
+  },
+  '8': {
+    id: '8',
+    name: 'Phone Stand',
+    category: 'Accessories',
+    price: 24.99,
+    rating: 3,
+    ratingCount: 45,
+    description: 'Adjustable aluminum phone stand with sturdy construction. Perfect for video calls, watching content, or as a charging station.',
+    features: [
+      'Adjustable viewing angle',
+      'Aluminum alloy construction',
+      'Non-slip silicone pads',
+      'Fits phones 4" to 8"',
+      'Cable management slot',
+      'Portable and foldable'
+    ],
+    specs: {
+      'Brand': 'StandPro',
+      'Material': 'Aluminum Alloy',
+      'Compatibility': '4" - 8" devices',
+      'Weight': '180g',
+      'Color': 'Silver',
+      'Dimensions': '4.7" x 3.5" x 0.5"'
+    }
+  },
+  '9': {
+    id: '9',
+    name: 'LED Desk Lamp',
+    category: 'Office',
+    price: 44.99,
+    rating: 5,
+    ratingCount: 134,
+    description: 'Modern LED desk lamp with adjustable brightness and color temperature. Eye-care technology reduces strain during long work hours.',
+    features: [
+      'Adjustable brightness (5 levels)',
+      'Color temperature control',
+      'Touch-sensitive controls',
+      'USB charging port',
+      'Memory function',
+      'Flicker-free LED technology'
+    ],
+    specs: {
+      'Brand': 'LightWork',
+      'Power': '12W LED',
+      'Color Temp': '3000K - 6000K',
+      'Brightness': 'Up to 800 lumens',
+      'Arm Rotation': '180°',
+      'Material': 'ABS + Aluminum'
+    }
+  }
+};
 
 // ===== DOM ELEMENTS =====
 const cartCountElement = document.getElementById('cart-count');
@@ -39,6 +270,29 @@ const priceMaxLabel = document.getElementById('price-max-label');
 const resetFiltersBtn = document.getElementById('reset-filters');
 const applyFiltersBtn = document.getElementById('apply-filters');
 
+// Floating Menu Elements
+const floatingMenuBtn = document.getElementById('floating-menu-btn');
+const floatingMenu = document.getElementById('floating-menu');
+const closeFloatingMenu = document.getElementById('close-floating-menu');
+const floatingMenuOverlay = document.getElementById('floating-menu-overlay');
+const floatingMenuItems = document.querySelectorAll('.floating-menu-item');
+
+// Product Detail Modal Elements
+const productDetailModal = document.getElementById('product-detail-modal');
+const closeProductDetail = document.getElementById('close-product-detail');
+const detailMainImage = document.getElementById('detail-main-image');
+const detailCategory = document.getElementById('detail-category');
+const detailName = document.getElementById('detail-name');
+const detailRating = document.getElementById('detail-rating');
+const detailPrice = document.getElementById('detail-price');
+const detailDescription = document.getElementById('detail-description');
+const detailFeatures = document.getElementById('detail-features');
+const detailSpecs = document.getElementById('detail-specs');
+const detailQtyInput = document.getElementById('detail-qty-input');
+const detailQtyDecrease = document.getElementById('detail-qty-decrease');
+const detailQtyIncrease = document.getElementById('detail-qty-increase');
+const detailAddToCart = document.getElementById('detail-add-to-cart');
+
 // ===== INITIALIZATION =====
 document.addEventListener('DOMContentLoaded', () => {
   initializeNavigation();
@@ -49,9 +303,106 @@ document.addEventListener('DOMContentLoaded', () => {
   initializeCategories();
   initializeFilters();
   initializeSort();
+  initializeFloatingMenu();
+  initializeProductDetail();
   updateCartDisplay();
   filterAndSortProducts();
+  preventMobileScrolling();
 });
+
+// ===== FLOATING MENU =====
+function initializeFloatingMenu() {
+  // Open floating menu
+  floatingMenuBtn.addEventListener('click', () => {
+    floatingMenu.classList.add('active');
+    floatingMenuOverlay.classList.add('active');
+    document.body.style.overflow = 'hidden';
+  });
+
+  // Close floating menu
+  closeFloatingMenu.addEventListener('click', closeFloatingMenuPanel);
+  floatingMenuOverlay.addEventListener('click', closeFloatingMenuPanel);
+
+  // Handle floating menu actions
+  floatingMenuItems.forEach(item => {
+    item.addEventListener('click', (e) => {
+      e.preventDefault();
+      const action = item.dataset.action;
+      handleFloatingMenuAction(action);
+      closeFloatingMenuPanel();
+    });
+  });
+}
+
+function closeFloatingMenuPanel() {
+  floatingMenu.classList.remove('active');
+  floatingMenuOverlay.classList.remove('active');
+  document.body.style.overflow = '';
+}
+
+function handleFloatingMenuAction(action) {
+  const navLinks = document.querySelectorAll('.nav-link');
+  const sections = document.querySelectorAll('.content-section');
+
+  switch (action) {
+    case 'products':
+      switchSection('products', navLinks, sections);
+      showToast('Navigated to Products');
+      break;
+
+    case 'filter':
+      // Go to products section and open filter panel
+      switchSection('products', navLinks, sections);
+      setTimeout(() => {
+        filterPanel.classList.add('active');
+        createFilterOverlay();
+      }, 300);
+      showToast('Filter panel opened');
+      break;
+
+    case 'support':
+      switchSection('contact', navLinks, sections);
+      showToast('Navigated to Support');
+      break;
+
+    case 'signin':
+      if (!isSignedIn) {
+        handleSignIn();
+      } else {
+        showToast('You are already signed in!');
+      }
+      break;
+
+    case 'signout':
+      if (isSignedIn) {
+        handleSignOut();
+      } else {
+        showToast('You are not signed in!');
+      }
+      break;
+  }
+}
+
+function handleSignIn() {
+  // Simulate sign in
+  isSignedIn = true;
+  updateUserStatus('John Doe', 'john.doe@email.com');
+  showToast('Successfully signed in!');
+}
+
+function handleSignOut() {
+  // Simulate sign out
+  isSignedIn = false;
+  updateUserStatus('Guest User', 'Not signed in');
+  showToast('Successfully signed out!');
+}
+
+function updateUserStatus(name, email) {
+  const userName = document.querySelector('.user-name');
+  const userEmail = document.querySelector('.user-email');
+  if (userName) userName.textContent = name;
+  if (userEmail) userEmail.textContent = email;
+}
 
 // ===== NAVIGATION =====
 function initializeNavigation() {
@@ -104,7 +455,10 @@ function switchSection(sectionId, navLinks, sections) {
     section.classList.remove('active');
     if (section.id === sectionId) {
       section.classList.add('active');
-      section.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      // Scroll to top of section smoothly
+      setTimeout(() => {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }, 100);
     }
   });
 
@@ -123,17 +477,59 @@ function switchSection(sectionId, navLinks, sections) {
 // ===== MOBILE MENU =====
 function initializeMobileMenu() {
   if (mobileMenuToggle) {
-    mobileMenuToggle.addEventListener('click', () => {
+    mobileMenuToggle.addEventListener('click', (e) => {
+      e.stopPropagation();
       nav.classList.toggle('active');
       mobileMenuToggle.classList.toggle('active');
-    });
-
-    document.addEventListener('click', (e) => {
-      if (!nav.contains(e.target) && !mobileMenuToggle.contains(e.target)) {
-        nav.classList.remove('active');
-        mobileMenuToggle.classList.remove('active');
+      
+      // Prevent body scroll when menu is open
+      if (nav.classList.contains('active')) {
+        document.body.style.overflow = 'hidden';
+      } else {
+        document.body.style.overflow = '';
       }
     });
+
+    // Close menu when clicking outside
+    document.addEventListener('click', (e) => {
+      if (nav.classList.contains('active') && 
+          !nav.contains(e.target) && 
+          !mobileMenuToggle.contains(e.target)) {
+        nav.classList.remove('active');
+        mobileMenuToggle.classList.remove('active');
+        document.body.style.overflow = '';
+      }
+    });
+  }
+}
+
+// ===== PREVENT MOBILE HORIZONTAL SCROLLING =====
+function preventMobileScrolling() {
+  // Prevent horizontal scroll on touch devices
+  let startX;
+  let scrollLeft;
+
+  document.addEventListener('touchstart', (e) => {
+    startX = e.touches[0].pageX;
+    scrollLeft = window.pageXOffset;
+  }, { passive: true });
+
+  document.addEventListener('touchmove', (e) => {
+    if (!startX) return;
+    
+    const x = e.touches[0].pageX;
+    const walk = (x - startX) * 2;
+    
+    // Prevent horizontal scroll
+    if (Math.abs(walk) > 10) {
+      e.preventDefault();
+    }
+  }, { passive: false });
+
+  // Ensure viewport is locked
+  const viewport = document.querySelector('meta[name="viewport"]');
+  if (viewport) {
+    viewport.setAttribute('content', 'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no');
   }
 }
 
@@ -251,6 +647,7 @@ function createFilterOverlay() {
     removeFilterOverlay();
   });
   document.body.appendChild(overlay);
+  document.body.style.overflow = 'hidden';
 }
 
 function removeFilterOverlay() {
@@ -259,6 +656,7 @@ function removeFilterOverlay() {
     overlay.classList.remove('active');
     setTimeout(() => overlay.remove(), 300);
   }
+  document.body.style.overflow = '';
 }
 
 // ===== SORT FUNCTIONALITY =====
@@ -561,11 +959,6 @@ if ('IntersectionObserver' in window) {
   });
 }
 
-// ===== SCROLL TO TOP ON PAGE LOAD =====
-window.addEventListener('load', () => {
-  window.scrollTo(0, 0);
-});
-
 // ===== HANDLE WINDOW RESIZE =====
 let resizeTimer;
 window.addEventListener('resize', () => {
@@ -574,6 +967,7 @@ window.addEventListener('resize', () => {
     if (window.innerWidth > 768) {
       nav.classList.remove('active');
       mobileMenuToggle.classList.remove('active');
+      document.body.style.overflow = '';
     }
   }, 250);
 });
@@ -584,10 +978,14 @@ document.addEventListener('keydown', (e) => {
     if (nav.classList.contains('active')) {
       nav.classList.remove('active');
       mobileMenuToggle.classList.remove('active');
+      document.body.style.overflow = '';
     }
     if (filterPanel.classList.contains('active')) {
       filterPanel.classList.remove('active');
       removeFilterOverlay();
+    }
+    if (floatingMenu.classList.contains('active')) {
+      closeFloatingMenuPanel();
     }
   }
 });
@@ -625,4 +1023,143 @@ document.querySelectorAll('.product-card').forEach(card => {
   card.style.transform = 'translateY(20px)';
   card.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
   observer.observe(card);
+});
+
+// ===== PRODUCT DETAIL MODAL =====
+function initializeProductDetail() {
+  // Add click listeners to product clickable areas
+  const clickableAreas = document.querySelectorAll('.product-clickable-area');
+  clickableAreas.forEach(area => {
+    area.addEventListener('click', (e) => {
+      const productId = area.dataset.productId;
+      openProductDetail(productId);
+    });
+  });
+
+  // Close modal listeners
+  closeProductDetail.addEventListener('click', closeProductDetailModal);
+  
+  productDetailModal.addEventListener('click', (e) => {
+    if (e.target === productDetailModal || e.target.classList.contains('product-detail-overlay')) {
+      closeProductDetailModal();
+    }
+  });
+
+  // Quantity controls
+  detailQtyDecrease.addEventListener('click', () => {
+    const currentQty = parseInt(detailQtyInput.value);
+    if (currentQty > 1) {
+      detailQtyInput.value = currentQty - 1;
+    }
+  });
+
+  detailQtyIncrease.addEventListener('click', () => {
+    const currentQty = parseInt(detailQtyInput.value);
+    if (currentQty < 10) {
+      detailQtyInput.value = currentQty + 1;
+    }
+  });
+
+  // Add to cart from detail
+  detailAddToCart.addEventListener('click', () => {
+    if (currentProduct) {
+      const quantity = parseInt(detailQtyInput.value);
+      for (let i = 0; i < quantity; i++) {
+        addToCart(
+          currentProduct.id,
+          currentProduct.name,
+          currentProduct.price,
+          `Images/product${currentProduct.id}.jpg`
+        );
+      }
+      closeProductDetailModal();
+      showToast(`${quantity}x ${currentProduct.name} added to cart!`);
+    }
+  });
+
+  // Thumbnail image switching
+  document.addEventListener('click', (e) => {
+    if (e.target.classList.contains('thumbnail')) {
+      document.querySelectorAll('.thumbnail').forEach(t => t.classList.remove('active'));
+      e.target.classList.add('active');
+      detailMainImage.src = e.target.src;
+    }
+  });
+}
+
+function openProductDetail(productId) {
+  const product = productsDatabase[productId];
+  if (!product) return;
+
+  currentProduct = product;
+  
+  // Populate modal with product data
+  detailMainImage.src = `Images/product${productId}.jpg`;
+  detailMainImage.alt = product.name;
+  
+  // Set thumbnail images (using same image for demo)
+  const thumbnails = document.querySelectorAll('.thumbnail');
+  thumbnails.forEach((thumb, index) => {
+    thumb.src = `Images/product${productId}.jpg`;
+    thumb.classList.toggle('active', index === 0);
+  });
+  
+  detailCategory.textContent = product.category;
+  detailName.textContent = product.name;
+  
+  // Rating
+  const stars = '⭐'.repeat(product.rating);
+  detailRating.querySelector('.stars').textContent = stars;
+  detailRating.querySelector('.rating-count').textContent = `(${product.ratingCount} reviews)`;
+  
+  detailPrice.textContent = `$${product.price.toFixed(2)}`;
+  detailDescription.textContent = product.description;
+  
+  // Features
+  detailFeatures.innerHTML = product.features
+    .map(feature => `<li>${feature}</li>`)
+    .join('');
+  
+  // Specifications
+  detailSpecs.innerHTML = Object.entries(product.specs)
+    .map(([label, value]) => `
+      <div class="spec-item">
+        <div class="spec-label">${label}</div>
+        <div class="spec-value">${value}</div>
+      </div>
+    `).join('');
+  
+  // Reset quantity
+  detailQtyInput.value = 1;
+  
+  // Show modal
+  productDetailModal.classList.add('active');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeProductDetailModal() {
+  productDetailModal.classList.remove('active');
+  document.body.style.overflow = '';
+  currentProduct = null;
+}
+
+// Close detail modal with ESC key
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape') {
+    if (nav.classList.contains('active')) {
+      nav.classList.remove('active');
+      mobileMenuToggle.classList.remove('active');
+      document.body.style.overflow = '';
+    }
+    if (filterPanel.classList.contains('active')) {
+      filterPanel.classList.remove('active');
+      removeFilterOverlay();
+    }
+    if (floatingMenu.classList.contains('active')) {
+      closeFloatingMenuPanel();
+    }
+    if (productDetailModal.classList.contains('active')) {
+      closeProductDetailModal();
+    }
+  }
 });
