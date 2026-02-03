@@ -1,9 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <meta name="description" content="Modern e-commerce store with quality products at affordable prices">
   <title>ModernShop - Quality Products Online</title>
   <link rel="stylesheet" href="styles.css">
@@ -11,8 +10,149 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
-
 <body>
+  <!-- Floating Menu Button (Top Left) -->
+  <button class="floating-menu-btn" id="floating-menu-btn" aria-label="Open menu">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <path d="M4 6h16M4 12h16M4 18h16"/>
+    </svg>
+  </button>
+
+  <!-- Floating Menu Panel -->
+  <div class="floating-menu" id="floating-menu">
+    <div class="floating-menu-header">
+      <h3>Menu</h3>
+      <button class="close-floating-menu" id="close-floating-menu" aria-label="Close menu">×</button>
+    </div>
+    
+    <nav class="floating-menu-nav">
+      <a href="#" class="floating-menu-item" data-action="products">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M3 3h18v18H3z"/>
+          <path d="M3 9h18M9 21V9"/>
+        </svg>
+        <span>Products</span>
+      </a>
+      
+      <a href="#" class="floating-menu-item" data-action="filter">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M3 4h18M3 12h12M3 20h6"/>
+        </svg>
+        <span>Filters</span>
+      </a>
+      
+      <a href="#" class="floating-menu-item" data-action="support">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="12" cy="12" r="10"/>
+          <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/>
+          <circle cx="12" cy="17" r="0.5" fill="currentColor"/>
+        </svg>
+        <span>Support</span>
+      </a>
+      
+      <a href="#" class="floating-menu-item" data-action="signin">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/>
+          <polyline points="10 17 15 12 10 7"/>
+          <line x1="15" y1="12" x2="3" y2="12"/>
+        </svg>
+        <span>Sign In</span>
+      </a>
+      
+      <a href="#" class="floating-menu-item" data-action="signout">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
+          <polyline points="16 17 21 12 16 7"/>
+          <line x1="21" y1="12" x2="9" y2="12"/>
+        </svg>
+        <span>Sign Out</span>
+      </a>
+    </nav>
+    
+    <div class="floating-menu-footer">
+      <div class="user-status">
+        <div class="user-avatar">👤</div>
+        <div class="user-info">
+          <div class="user-name">Guest User</div>
+          <div class="user-email">Not signed in</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Overlay for floating menu -->
+  <div class="floating-menu-overlay" id="floating-menu-overlay"></div>
+
+  <!-- Product Detail Modal -->
+  <div class="product-detail-modal" id="product-detail-modal">
+    <div class="product-detail-overlay"></div>
+    <div class="product-detail-content">
+      <button class="close-product-detail" id="close-product-detail" aria-label="Close product details">
+        ×
+      </button>
+      
+      <div class="product-detail-inner">
+        <div class="product-detail-images">
+          <div class="product-detail-main-image">
+            <img id="detail-main-image" src="" alt="">
+          </div>
+          <div class="product-detail-thumbnails">
+            <img class="thumbnail active" src="" alt="View 1">
+            <img class="thumbnail" src="" alt="View 2">
+            <img class="thumbnail" src="" alt="View 3">
+          </div>
+        </div>
+        
+        <div class="product-detail-info">
+          <div class="product-detail-category" id="detail-category"></div>
+          <h1 class="product-detail-name" id="detail-name"></h1>
+          
+          <div class="product-detail-rating" id="detail-rating">
+            <span class="stars"></span>
+            <span class="rating-count"></span>
+            <span class="reviews-link">(See all reviews)</span>
+          </div>
+          
+          <div class="product-detail-price" id="detail-price"></div>
+          
+          <div class="product-detail-description" id="detail-description"></div>
+          
+          <div class="product-detail-features">
+            <h3>Key Features</h3>
+            <ul id="detail-features"></ul>
+          </div>
+          
+          <div class="product-detail-specs">
+            <h3>Specifications</h3>
+            <div class="specs-grid" id="detail-specs"></div>
+          </div>
+          
+          <div class="product-detail-actions">
+            <div class="quantity-selector">
+              <button class="qty-decrease" id="detail-qty-decrease">−</button>
+              <input type="number" class="qty-input" id="detail-qty-input" value="1" min="1" max="10">
+              <button class="qty-increase" id="detail-qty-increase">+</button>
+            </div>
+            <button class="detail-add-to-cart-btn" id="detail-add-to-cart">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M9 2L7 6H3L5 20H19L21 6H17L15 2H9Z"/>
+                <circle cx="9" cy="21" r="1"/>
+                <circle cx="19" cy="21" r="1"/>
+              </svg>
+              Add to Cart
+            </button>
+          </div>
+          
+          <div class="product-detail-badges">
+            <span class="detail-badge">✓ Free Shipping</span>
+            <span class="detail-badge">✓ 30-Day Returns</span>
+            <span class="detail-badge">✓ 1-Year Warranty</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <!-- Header with improved navigation -->
   <header class="header">
     <div class="container">
@@ -21,14 +161,14 @@
           <h1>ModernShop</h1>
           <span class="tagline">Quality & Style</span>
         </div>
-
+        
         <!-- Search Bar -->
         <div class="search-container">
           <input type="text" id="search-input" class="search-input" placeholder="Search products...">
           <button class="search-btn" aria-label="Search">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <circle cx="11" cy="11" r="8" />
-              <path d="m21 21-4.35-4.35" />
+              <circle cx="11" cy="11" r="8"/>
+              <path d="m21 21-4.35-4.35"/>
             </svg>
           </button>
         </div>
@@ -52,9 +192,9 @@
         <!-- Cart indicator -->
         <button class="cart-btn" data-section="cart">
           <svg class="cart-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <path d="M9 2L7 6H3L5 20H19L21 6H17L15 2H9Z" />
-            <circle cx="9" cy="21" r="1" />
-            <circle cx="19" cy="21" r="1" />
+            <path d="M9 2L7 6H3L5 20H19L21 6H17L15 2H9Z"/>
+            <circle cx="9" cy="21" r="1"/>
+            <circle cx="19" cy="21" r="1"/>
           </svg>
           <span class="cart-count" id="cart-count">0</span>
         </button>
@@ -96,11 +236,11 @@
           <div class="filter-group">
             <button class="filter-btn" id="filter-toggle">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <path d="M3 4h18M3 12h12M3 20h6" />
+                <path d="M3 4h18M3 12h12M3 20h6"/>
               </svg>
               Filters
             </button>
-
+            
             <select id="sort-select" class="sort-select">
               <option value="default">Sort by: Default</option>
               <option value="price-low">Price: Low to High</option>
@@ -121,7 +261,7 @@
             <h3>Filters</h3>
             <button class="close-filter" id="close-filter" aria-label="Close filters">×</button>
           </div>
-
+          
           <div class="filter-section">
             <h4>Price Range</h4>
             <div class="price-range">
@@ -162,9 +302,9 @@
 
         <!-- Products Grid -->
         <div class="products-grid" id="products-grid">
-          <!-- Electronics -->
-          <div class="product-card" data-product-id="1" data-product-name="Wireless Headphones"
-            data-product-price="79.99" data-category="audio" data-rating="5">
+          <!-- Product cards with clickable overlay -->
+          <div class="product-card" data-product-id="1" data-product-name="Wireless Headphones" data-product-price="79.99" data-category="audio" data-rating="5">
+            <div class="product-clickable-area" data-product-id="1"></div>
             <div class="product-image">
               <img src="Images/product1.jpg" alt="Wireless Headphones" loading="lazy">
               <span class="product-badge">New</span>
@@ -181,7 +321,7 @@
                 <span class="product-price">$79.99</span>
                 <button class="add-to-cart-btn" aria-label="Add Wireless Headphones to cart">
                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <path d="M12 5v14M5 12h14" />
+                    <path d="M12 5v14M5 12h14"/>
                   </svg>
                   Add to Cart
                 </button>
@@ -189,8 +329,8 @@
             </div>
           </div>
 
-          <div class="product-card" data-product-id="2" data-product-name="Smart Watch" data-product-price="149.99"
-            data-category="electronics" data-rating="4">
+          <div class="product-card" data-product-id="2" data-product-name="Smart Watch" data-product-price="149.99" data-category="electronics" data-rating="4">
+            <div class="product-clickable-area" data-product-id="2"></div>
             <div class="product-image">
               <img src="Images/product2.jpg" alt="Smart Watch" loading="lazy">
               <span class="product-badge sale">Sale</span>
@@ -207,7 +347,7 @@
                 <span class="product-price">$149.99</span>
                 <button class="add-to-cart-btn" aria-label="Add Smart Watch to cart">
                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <path d="M12 5v14M5 12h14" />
+                    <path d="M12 5v14M5 12h14"/>
                   </svg>
                   Add to Cart
                 </button>
@@ -215,8 +355,8 @@
             </div>
           </div>
 
-          <div class="product-card" data-product-id="3" data-product-name="Laptop Backpack" data-product-price="59.99"
-            data-category="accessories" data-rating="4">
+          <div class="product-card" data-product-id="3" data-product-name="Laptop Backpack" data-product-price="59.99" data-category="accessories" data-rating="4">
+            <div class="product-clickable-area" data-product-id="3"></div>
             <div class="product-image">
               <img src="Images/product3.jpg" alt="Laptop Backpack" loading="lazy">
             </div>
@@ -232,7 +372,7 @@
                 <span class="product-price">$59.99</span>
                 <button class="add-to-cart-btn" aria-label="Add Laptop Backpack to cart">
                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <path d="M12 5v14M5 12h14" />
+                    <path d="M12 5v14M5 12h14"/>
                   </svg>
                   Add to Cart
                 </button>
@@ -240,8 +380,8 @@
             </div>
           </div>
 
-          <div class="product-card" data-product-id="4" data-product-name="Portable Charger" data-product-price="39.99"
-            data-category="electronics" data-rating="5">
+          <div class="product-card" data-product-id="4" data-product-name="Portable Charger" data-product-price="39.99" data-category="electronics" data-rating="5">
+            <div class="product-clickable-area" data-product-id="4"></div>
             <div class="product-image">
               <img src="Images/product4.jpg" alt="Portable Charger" loading="lazy">
             </div>
@@ -257,7 +397,7 @@
                 <span class="product-price">$39.99</span>
                 <button class="add-to-cart-btn" aria-label="Add Portable Charger to cart">
                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <path d="M12 5v14M5 12h14" />
+                    <path d="M12 5v14M5 12h14"/>
                   </svg>
                   Add to Cart
                 </button>
@@ -265,8 +405,8 @@
             </div>
           </div>
 
-          <div class="product-card" data-product-id="5" data-product-name="Bluetooth Speaker" data-product-price="89.99"
-            data-category="audio" data-rating="5">
+          <div class="product-card" data-product-id="5" data-product-name="Bluetooth Speaker" data-product-price="89.99" data-category="audio" data-rating="5">
+            <div class="product-clickable-area" data-product-id="5"></div>
             <div class="product-image">
               <img src="Images/product5.jpg" alt="Bluetooth Speaker" loading="lazy">
               <span class="product-badge">Popular</span>
@@ -283,7 +423,7 @@
                 <span class="product-price">$89.99</span>
                 <button class="add-to-cart-btn" aria-label="Add Bluetooth Speaker to cart">
                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <path d="M12 5v14M5 12h14" />
+                    <path d="M12 5v14M5 12h14"/>
                   </svg>
                   Add to Cart
                 </button>
@@ -291,8 +431,8 @@
             </div>
           </div>
 
-          <div class="product-card" data-product-id="6" data-product-name="USB-C Cable" data-product-price="19.99"
-            data-category="accessories" data-rating="4">
+          <div class="product-card" data-product-id="6" data-product-name="USB-C Cable" data-product-price="19.99" data-category="accessories" data-rating="4">
+            <div class="product-clickable-area" data-product-id="6"></div>
             <div class="product-image">
               <img src="Images/product6.jpg" alt="USB-C Cable" loading="lazy">
             </div>
@@ -308,7 +448,7 @@
                 <span class="product-price">$19.99</span>
                 <button class="add-to-cart-btn" aria-label="Add USB-C Cable to cart">
                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <path d="M12 5v14M5 12h14" />
+                    <path d="M12 5v14M5 12h14"/>
                   </svg>
                   Add to Cart
                 </button>
@@ -316,8 +456,8 @@
             </div>
           </div>
 
-          <div class="product-card" data-product-id="7" data-product-name="Wireless Mouse" data-product-price="29.99"
-            data-category="office" data-rating="4">
+          <div class="product-card" data-product-id="7" data-product-name="Wireless Mouse" data-product-price="29.99" data-category="office" data-rating="4">
+            <div class="product-clickable-area" data-product-id="7"></div>
             <div class="product-image">
               <img src="Images/product7.jpg" alt="Wireless Mouse" loading="lazy">
             </div>
@@ -333,7 +473,7 @@
                 <span class="product-price">$29.99</span>
                 <button class="add-to-cart-btn" aria-label="Add Wireless Mouse to cart">
                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <path d="M12 5v14M5 12h14" />
+                    <path d="M12 5v14M5 12h14"/>
                   </svg>
                   Add to Cart
                 </button>
@@ -341,8 +481,8 @@
             </div>
           </div>
 
-          <div class="product-card" data-product-id="8" data-product-name="Phone Stand" data-product-price="24.99"
-            data-category="accessories" data-rating="3">
+          <div class="product-card" data-product-id="8" data-product-name="Phone Stand" data-product-price="24.99" data-category="accessories" data-rating="3">
+            <div class="product-clickable-area" data-product-id="8"></div>
             <div class="product-image">
               <img src="Images/product8.jpg" alt="Phone Stand" loading="lazy">
             </div>
@@ -358,7 +498,7 @@
                 <span class="product-price">$24.99</span>
                 <button class="add-to-cart-btn" aria-label="Add Phone Stand to cart">
                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <path d="M12 5v14M5 12h14" />
+                    <path d="M12 5v14M5 12h14"/>
                   </svg>
                   Add to Cart
                 </button>
@@ -366,50 +506,24 @@
             </div>
           </div>
 
-          <div class="product-card" data-product-id="9" data-product-name="BAG" data-product-price="44.99"
-            data-category="office" data-rating="5">
+          <div class="product-card" data-product-id="9" data-product-name="LED Desk Lamp" data-product-price="44.99" data-category="office" data-rating="5">
+            <div class="product-clickable-area" data-product-id="9"></div>
             <div class="product-image">
-              <img src="Images/product9.jpg" alt="BAG" loading="lazy">
+              <img src="Images/product9.jpg" alt="LED Desk Lamp" loading="lazy">
             </div>
             <div class="product-info">
               <div class="product-category">Office</div>
-              <h3 class="product-name">BAG</h3>
-              <p class="product-description">BAG</p>
+              <h3 class="product-name">LED Desk Lamp</h3>
+              <p class="product-description">Adjustable brightness and color temp</p>
               <div class="product-rating">
                 <span class="stars">⭐⭐⭐⭐⭐</span>
                 <span class="rating-count">(134)</span>
               </div>
               <div class="product-footer">
                 <span class="product-price">$44.99</span>
-                <button class="add-to-cart-btn" aria-label="Add BAG to cart">
+                <button class="add-to-cart-btn" aria-label="Add LED Desk Lamp to cart">
                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <path d="M12 5v14M5 12h14" />
-                  </svg>
-                  Add to Cart
-                </button>
-              </div>
-            </div>
-          </div>
-
-
-          <div class="product-card" data-product-id="9" data-product-name="LED Desk Lamp" data-product-price="44.99"
-            data-category="office" data-rating="5">
-            <div class="product-image">
-              <img src="Images/product10.jpeg" alt="WRISTWATCH" loading="lazy">
-            </div>
-            <div class="product-info">
-              <div class="product-category">Office</div>
-              <h3 class="product-name">ROLEX</h3>
-              <p class="product-description">Submariner</p>
-              <div class="product-rating">
-                <span class="stars">⭐⭐⭐⭐⭐</span>
-                <span class="rating-count">(134)</span>
-              </div>
-              <div class="product-footer">
-                <span class="product-price">$44.99</span>
-                <button class="add-to-cart-btn" aria-label="Add WRISTWATCH to cart">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <path d="M12 5v14M5 12h14" />
+                    <path d="M12 5v14M5 12h14"/>
                   </svg>
                   Add to Cart
                 </button>
@@ -421,8 +535,8 @@
         <!-- No Results Message -->
         <div class="no-results" id="no-results">
           <svg class="no-results-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <circle cx="11" cy="11" r="8" />
-            <path d="m21 21-4.35-4.35" />
+            <circle cx="11" cy="11" r="8"/>
+            <path d="m21 21-4.35-4.35"/>
           </svg>
           <h3>No products found</h3>
           <p>Try adjusting your search or filters</p>
@@ -465,7 +579,7 @@
       </div>
     </section>
 
-    <!-- Contact Section -->
+    <!-- Contact Section (Support) -->
     <section id="contact" class="content-section">
       <div class="container">
         <div class="section-header">
@@ -517,9 +631,9 @@
           <div id="cart-items" class="cart-items"></div>
           <div id="empty-cart" class="empty-cart">
             <svg class="empty-cart-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <path d="M9 2L7 6H3L5 20H19L21 6H17L15 2H9Z" />
-              <circle cx="9" cy="21" r="1" />
-              <circle cx="19" cy="21" r="1" />
+              <path d="M9 2L7 6H3L5 20H19L21 6H17L15 2H9Z"/>
+              <circle cx="9" cy="21" r="1"/>
+              <circle cx="19" cy="21" r="1"/>
             </svg>
             <p>Your cart is empty</p>
             <a href="#products" class="shop-now-link">Start Shopping</a>
@@ -591,5 +705,4 @@
 
   <script src="script.js"></script>
 </body>
-
 </html>
